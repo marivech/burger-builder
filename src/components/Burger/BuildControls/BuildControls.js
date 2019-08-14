@@ -10,6 +10,7 @@ const controls = [
 ];
 const buildControls = props => 
     <div className={classes.BuildControls}>
+        <p>Current price: <span>{props.price.toFixed(2)}</span></p>
         {controls.map(ctrl =>
             <BuildControl
                 removed={() => props.ingredientRemoved(ctrl.type)}
