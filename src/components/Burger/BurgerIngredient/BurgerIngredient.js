@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classes from './*.module.css';
+import classes from './BurgerIngredient.module.css';
 
 
 class BurgerIngredient extends Component {
     render() {
-        const simpleIngrs = ['bread-bottom', 'cheese', 'meat', 'salad, bacon'];
+        const simpleIngrs = ['bread-bottom', 'cheese', 'meat', 'salad', 'bacon'];
         const complexIngrs = ['bread-top'];
     
-        // convert type to string of CSS class
-        const ingClass = this.props.type.replace(/(-\w)/g, m => m[1].toUpperCase());
-    
+        const ingClass = getClassName(this.props.type);
         if (simpleIngrs.includes(this.props.type)) {
             return (
                 <div 
@@ -33,5 +31,10 @@ class BurgerIngredient extends Component {
 BurgerIngredient.propTypes = {
     type: PropTypes.string.isRequired,
 };
+
+function getClassName(string) {
+    const upperCased = string.replace(/(-\w)/g, m => m[1].toUpperCase());
+    return `${upperCased[0].toUpperCase()}${upperCased.slice(1)}`;
+}
 
 export default BurgerIngredient;

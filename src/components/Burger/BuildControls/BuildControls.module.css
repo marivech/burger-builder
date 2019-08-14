@@ -1,0 +1,9 @@
+.BuildControls {
+    width: 100%;
+    background: tomato;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    padding: 10px;
+    margin: 0 auto;
+}
