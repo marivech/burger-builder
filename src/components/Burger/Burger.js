@@ -13,14 +13,17 @@ const burger = props => {
             ))
         )
         .flat();
-    const alert = transformedIngredients.length > 0 ? null : <p>Start edit your burger!</p>
+    const alert = transformedIngredients.length > 0 ? null : <li className={classes.s}>Start edit your burger!</li>
     return (
-        <div className={classes.Burger}>
-            <BurgerIngredient type='bread-top' />
-            {transformedIngredients}
-            {alert}
-            <BurgerIngredient type='bread-bottom' />
-        </div>
+        <figure className={classes.Burger}>
+            <figcaption>Your order:</figcaption>
+            <ul>
+                <BurgerIngredient type='bread-top' />
+                {transformedIngredients}
+                {alert}
+                <BurgerIngredient type='bread-bottom' />
+            </ul>
+        </figure>
     )
 };
 export default burger;

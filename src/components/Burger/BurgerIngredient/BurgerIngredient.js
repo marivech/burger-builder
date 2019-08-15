@@ -11,16 +11,16 @@ class BurgerIngredient extends Component {
         const ingClass = getClassName(this.props.type);
         if (simpleIngrs.includes(this.props.type)) {
             return (
-                <div 
+                <li 
                     className={classes[ingClass]}>
-                </div>
+                </li>
             );
         } else if (complexIngrs.includes(this.props.type)) {
             return (
-                <div className={classes[ingClass]}>
+                <li className={classes[ingClass]}>
                     <div className={classes.Seeds1}></div>
                     <div className={classes.Seeds2}></div>
-                </div>
+                </li>
             );
         } else {
             return null;

@@ -6,6 +6,15 @@
     text-align: center;
     font-weight: bold;
     font-size: 1.2rem;
+    display: flex;
+    flex-flow: column;
+}
+
+.Burger li {
+    list-style-type: none;
+}
+.Burger ul {
+    height: 100%;
 }
 
 
@@ -26,6 +35,6 @@
 @media (min-width: 1000px) and (min-height: 700px) {
     .Burger {
         width: 700px;
-        height: 600px;
+        height: 560px;
     }
 }
