@@ -16,7 +16,7 @@
 
 .Hidden {
     opacity: 0;
-    transform: translateX(-10vh);
+    transform: translateX(-100vh);
 }
 
 @media (min-width: 600px) {
