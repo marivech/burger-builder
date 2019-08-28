@@ -13,7 +13,7 @@ const burger = props => {
             ))
         )
         .flat();
-    const alert = transformedIngredients.length > 0 ? null : <li className={classes.s}>Start edit your burger!</li>
+    const alert = transformedIngredients.length > 0 ? null : <li>Start edit your burger!</li>
     return (
         <figure className={classes.Burger}>
             <figcaption>Your order:</figcaption>
