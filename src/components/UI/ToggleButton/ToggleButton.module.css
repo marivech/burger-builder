@@ -1,0 +1,47 @@
+.ToggleButton {
+    width: 40px;
+    height: 25px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-top: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+}
+
+.ToggleButton:hover {
+    cursor: pointer;
+}
+
+.ToggleButton.Opened:before {
+    background-color: #703B09;
+    border-color: #8F5C2C;
+}
+
+.ToggleButton.Closed:before {
+    background-color: #fff;
+}
+
+.ToggleButton.Closed {
+    border-color: #fff;
+}
+
+.ToggleButton.Opened {
+    border-color: #703B09;
+    /* margin-left: 80%; */
+}
+
+.ToggleButton:before {
+    content: ' ';
+    width: 100%;
+    height: 3px;
+}
+
+@media (min-width: 500px) {
+    .ToggleButton {
+        display: none;
+    }
+}

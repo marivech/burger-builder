@@ -9,7 +9,7 @@ const controls = [
     {label: 'Bacon', type: 'bacon'},
 ];
 const buildControls = props => 
-    <aside className={classes.BuildControls}>
+    <section className={classes.BuildControls}>
         <p>Current price: <span>{props.price.toFixed(2)}</span></p>
         <ul>
             {controls.map(ctrl =>
@@ -25,5 +25,5 @@ const buildControls = props =>
             onClick={props.checkouting}
             className={classes.OrderButton}
             disabled={!props.purchasable}>Order now</button>
-    </aside>;
+    </section>;
 export default buildControls;
