@@ -3,6 +3,7 @@
     background-color: #fff;
     border-radius: 5px;
     box-sizing: border-box;
+    margin: 0;
 }
 
 .Logo img {
@@ -14,5 +15,6 @@
 }
 
 .Logo.Large {
+    margin: 16px 0;
     height: 11%;
 }

@@ -15,7 +15,7 @@ const orderSummary = props => {
             <ul className={classes.OrderSummary}>
                 {ingredientsSummary}
             </ul>
-            <p className={classes.Total}>Total: <span className={classes.Price}>{props.total}</span></p>
+            <p className={classes.Total}>Total: <span className={classes.Price}>{props.total.toFixed(2)}</span></p>
             <Button type="Danger" clicked={props.purchaseCancelled}>CANCEL</Button>
             <Button type="Success" clicked={props.purchaseContinued}>CONTINUE</Button>
         </Aux>
