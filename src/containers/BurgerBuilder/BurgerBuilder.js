@@ -6,7 +6,6 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import axios from '../../configs/request';
 
 class BurgerBuilder extends Component {
     state = {
@@ -34,24 +33,16 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        // console.log('You continued purchasing');
-        this.setState({ loading: true })
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'John Doe',
-                inHouse: true,
-            }
+        //console.log(this.props)
+        const params = [];
+        for (let i in this.state.ingredients) {
+            params.push(`${encodeURIComponent(i)}=${encodeURIComponent(this.state.ingredients[i])}`);
         }
-
-        axios.post('/orders.json', order)
-            .then(() => {
-                this.setState({ loading: false, purchasing: false });
-            })
-            .catch(() => {
-                this.setState({ loading: false, purchasing: false });
-            })
+        const queryParams = params.join('&');
+        this.props.history.push ({
+            pathname: '/checkout',
+            search: `?${queryParams}&totalPrice=${this.state.totalPrice}`,
+        });
     };
 
 
