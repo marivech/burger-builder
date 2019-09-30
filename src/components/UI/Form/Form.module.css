@@ -1,0 +1,8 @@
+.FormElement {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.FormElement {
+    text-align: left;
+}
