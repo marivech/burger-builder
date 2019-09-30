@@ -4,7 +4,7 @@ import Select from './Select/Select';
 import TextArea from './TextArea/TextArea';
 import classes from './Form.module.css';
 
-const form = ({ formType, attrs, label, changed }) => {
+const form = ({ formType, attrs, label, changed, isValid, shouldValidate, touched }) => {
     let elm = null;
     switch (formType) {
         case 'textArea':
@@ -14,11 +14,11 @@ const form = ({ formType, attrs, label, changed }) => {
             elm = <Select options={attrs.options} attrs={attrs.misc} changed={changed} />;
             break;
         default:
-            elm = <Input attrs={attrs} changed={changed} />;
+            elm = <Input attrs={attrs} changed={changed}/>;
             break;
     }
     return (
-        <div className={classes.FormElement}>
+        <div className={`${classes.FormElement} ${isValid || !shouldValidate || !touched ? '' : classes.Invalid }`}>
             <label>{label}</label>
             {elm}
         </div>

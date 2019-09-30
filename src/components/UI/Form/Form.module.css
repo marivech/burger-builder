@@ -6,3 +6,19 @@
 .FormElement {
     text-align: left;
 }
+
+.FormElement label {
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.FormElement.Invalid label {
+    color: #FDA49A;
+}
+.FormElement.Invalid label:after,
+.FormElement.Invalid label:before {
+    content: '!';
+    color: #FDA49A;
+    margin: 0 5px;
+}
