@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
-import { INGREDIENTS, PRICES } from '../../configs/configs';
 import Aux from '../../hoc/Aux/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { connect } from 'react-redux';
+import * as actionTypes from '../../configs/actionTypes';
 
 class BurgerBuilder extends Component {
     state = {
-        ingredients: {
-            ...INGREDIENTS
-        },
-        totalPrice: 4,
         purchasable: false,
         purchasing: false,
         loading: false,
     };
 
+    componentDidMount() {
+        this.updatePurchaseState(this.props.ingredients);
+    }
+
     updatePurchaseState = (ingredients) => {
         const sum = Object.values(ingredients)
             .reduce((sum, elm) => sum + elm, 0);
-        this.setState({purchasable: sum > 0});
+        return sum > 0;
     }
 
     purchaseHandler = () => {
@@ -33,53 +34,14 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        //console.log(this.props)
-        const params = [];
-        for (let i in this.state.ingredients) {
-            params.push(`${encodeURIComponent(i)}=${encodeURIComponent(this.state.ingredients[i])}`);
-        }
-        const queryParams = params.join('&');
         this.props.history.push ({
             pathname: '/checkout',
-            search: `?${queryParams}&totalPrice=${this.state.totalPrice}`,
         });
     };
 
-
-    addIngredientHandler = type => {
-        const oldQty = this.state.ingredients[type];
-        const newQty = oldQty + 1;
-        const newIngredients = { ...this.state.ingredients};
-        newIngredients[type] = newQty;
-
-        const oldPrice = this.state.totalPrice;
-        const newPrice = oldPrice + PRICES[type];
-        this.setState({
-            ingredients: newIngredients,
-            totalPrice: newPrice,
-        });
-        this.updatePurchaseState(newIngredients);
-    }
-
-    removeIngredientHandler = type => {
-        const oldQty = this.state.ingredients[type];
-        if (oldQty > 0) {
-            const newQty = oldQty - 1;
-            const newIngredients = { ...this.state.ingredients};
-            newIngredients[type] = newQty;
-
-            const oldPrice = this.state.totalPrice;
-            const newPrice = oldPrice - PRICES[type];
-            this.setState({
-                ingredients: newIngredients,
-                totalPrice: newPrice,
-            });
-            this.updatePurchaseState(newIngredients);
-        }
-    }
     render() {
         const disabledInfo = {
-            ...this.state.ingredients
+            ...this.props.ingredients
         }
         for (let ing in disabledInfo) {
             disabledInfo[ing] = disabledInfo[ing] <= 0;
@@ -95,20 +57,34 @@ class BurgerBuilder extends Component {
                     <OrderSummary
                         purchaseCancelled={this.purchaseCancelHandler}
                         purchaseContinued={this.purchaseContinueHandler}
-                        ingredients={this.state.ingredients}
-                        total={this.state.totalPrice} />
+                        ingredients={this.props.ingredients}
+                        total={this.props.totalPrice} />
                 </Modal>
-                <Burger ingredients={this.state.ingredients} />
+                <Burger ingredients={this.props.ingredients} />
                 <BuildControls 
-                    ingredientAdded={this.addIngredientHandler}
-                    ingredientRemoved={this.removeIngredientHandler}
+                    ingredientAdded={this.props.onAddItemHandler}
+                    ingredientRemoved={this.props.onRemoveHandler}
                     disabledInfo={disabledInfo} 
-                    price={this.state.totalPrice}
-                    purchasable={this.state.purchasable}
+                    price={this.props.totalPrice}
+                    purchasable={this.updatePurchaseState(this.props.ingredients)}
                     checkouting={this.purchaseHandler} />
             </Aux>
         );
     }
 }
 
-export default BurgerBuilder;
+const mapStateToProps = state => {
+    return {
+        ingredients: state.ingredients,
+        totalPrice: state.totalPrice,
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onAddItemHandler: (name) => dispatch({ type: actionTypes.ADD_ITEM, name}),
+        onRemoveHandler: (name) => dispatch({ type: actionTypes.REMOVE_ITEM, name})
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BurgerBuilder);
