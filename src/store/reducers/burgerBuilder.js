@@ -1,4 +1,4 @@
-import { INGREDIENTS, PRICES } from '../configs/configs';
+import { INGREDIENTS, PRICES } from '../../configs/configs';
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {

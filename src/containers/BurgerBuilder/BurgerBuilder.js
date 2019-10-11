@@ -6,7 +6,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../configs/actionTypes';
+import * as burgerBuilderActions from '../../store/actions';
 
 class BurgerBuilder extends Component {
     state = {
@@ -82,8 +82,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onAddItemHandler: (name) => dispatch({ type: actionTypes.ADD_ITEM, name}),
-        onRemoveHandler: (name) => dispatch({ type: actionTypes.REMOVE_ITEM, name})
+        onAddItemHandler: (name) => dispatch(burgerBuilderActions.addItem(name)),
+        onRemoveHandler: (name) => dispatch(burgerBuilderActions.removeItem(name))
     };
 }
 
