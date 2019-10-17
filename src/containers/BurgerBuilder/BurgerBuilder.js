@@ -6,7 +6,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { connect } from 'react-redux';
-import * as burgerBuilderActions from '../../store/actions';
+import * as actions from '../../store/actions';
 
 class BurgerBuilder extends Component {
     state = {
@@ -16,10 +16,10 @@ class BurgerBuilder extends Component {
     };
 
     componentDidMount() {
-        this.updatePurchaseState(this.props.ingredients);
+        this.props.initIngredients();
     }
 
-    updatePurchaseState = (ingredients) => {
+    updatePurchaseState = ingredients => {
         const sum = Object.values(ingredients)
             .reduce((sum, elm) => sum + elm, 0);
         return sum > 0;
@@ -34,6 +34,7 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
+        this.props.onInitPurchase();
         this.props.history.push ({
             pathname: '/checkout',
         });
@@ -47,27 +48,35 @@ class BurgerBuilder extends Component {
             disabledInfo[ing] = disabledInfo[ing] <= 0;
         }
 
-
+        let burger = this.props.error ? <p>Ingredients cannot be loaded</p> : <Spinner show={this.state.loading} />;
+        let orderSummary = null;
+        if (this.props.ingredients) {
+            burger = (
+                <Aux>
+                    <Burger ingredients={this.props.ingredients} />
+                    <BuildControls 
+                        ingredientAdded={this.props.onAddItemHandler}
+                        ingredientRemoved={this.props.onRemoveHandler}
+                        disabledInfo={disabledInfo} 
+                        price={this.props.totalPrice}
+                        purchasable={this.updatePurchaseState(this.props.ingredients)}
+                        checkouting={this.purchaseHandler} />
+                </Aux>
+            );
+            orderSummary = <OrderSummary
+                purchaseCancelled={this.purchaseCancelHandler}
+                purchaseContinued={this.purchaseContinueHandler}
+                ingredients={this.props.ingredients}
+                total={this.props.totalPrice} />;
+        }
         return (
             <Aux>
                 <Modal 
                     show={this.state.purchasing}
                     closed={this.purchaseCancelHandler}>
-                    <Spinner show={this.state.loading} />
-                    <OrderSummary
-                        purchaseCancelled={this.purchaseCancelHandler}
-                        purchaseContinued={this.purchaseContinueHandler}
-                        ingredients={this.props.ingredients}
-                        total={this.props.totalPrice} />
+                {orderSummary}
                 </Modal>
-                <Burger ingredients={this.props.ingredients} />
-                <BuildControls 
-                    ingredientAdded={this.props.onAddItemHandler}
-                    ingredientRemoved={this.props.onRemoveHandler}
-                    disabledInfo={disabledInfo} 
-                    price={this.props.totalPrice}
-                    purchasable={this.updatePurchaseState(this.props.ingredients)}
-                    checkouting={this.purchaseHandler} />
+                {burger}
             </Aux>
         );
     }
@@ -75,16 +84,18 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        totalPrice: state.totalPrice,
+        ingredients: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onAddItemHandler: (name) => dispatch(burgerBuilderActions.addItem(name)),
-        onRemoveHandler: (name) => dispatch(burgerBuilderActions.removeItem(name))
+        onAddItemHandler: (name) => dispatch(actions.addItem(name)),
+        onRemoveHandler: (name) => dispatch(actions.removeItem(name)),
+        initIngredients: () => dispatch(actions.initIngredients()),
+        onInitPurchase: () => dispatch(actions.purchaseInit()),
     };
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(BurgerBuilder);

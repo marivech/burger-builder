@@ -5,6 +5,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import FormElm from '../UI/Form/Form';
 import classes from './ContactData.module.css';
 import { connect } from 'react-redux';
+import * as orderActions from '../../store/actions';
 
 
 class ContactData extends Component {
@@ -129,15 +130,7 @@ class ContactData extends Component {
             orderData: {...formData},
         }
 
-        axios.post('/orders.json', order)
-            .then(() => {
-                this.setState({ loading: false});
-                this.props.history.push('/');
-            })
-            .catch(() => {
-                this.setState({ loading: false});
-                this.props.history.push('/');
-            })
+        this.props.onOrderPlaced(order);
     }
 
     changeFieldHandler = (event, inputIdentifier) => {
@@ -207,8 +200,15 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        totalPrice: state.totalPrice,
+        ingredients: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice,
+        error: state.order.error,
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onOrderPlaced: orderData => dispatch(orderActions.purchaseBurger(orderData)),
     }
 }
-export default connect(mapStateToProps)(ContactData);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
