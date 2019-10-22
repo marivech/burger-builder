@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Button from '../UI/Button/Button';
-import axios from '../../configs/request';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import FormElm from '../UI/Form/Form';
 import classes from './ContactData.module.css';
@@ -35,7 +34,7 @@ class ContactData extends Component {
                 },
                 validation: {
                     required: true,
-                    match: new RegExp(/^\w+@\w+\.[\w.]+$/, 'gi'),
+                    match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
                 },
                 isValid: false,
                 touched: false,
@@ -50,8 +49,7 @@ class ContactData extends Component {
                 },
                 validation: {
                     required: true,
-                    minLength: 5,
-                    maxLength: 5,
+                    minLength: 10,
                 },
                 isValid: false,
                 touched: false,
@@ -81,7 +79,7 @@ class ContactData extends Component {
                     required: true,
                 },
                 isValid: false,
-                touched: false,
+                touched: true,
             },
             comments: {
                 label: 'Comments to order',
@@ -98,6 +96,10 @@ class ContactData extends Component {
 
     checkFieldValueValidity = (value, rules) => {
         let isValid = true;
+        
+        if (!rules) {
+            return true;
+        }
         if (rules.required) {
             isValid = value.trim() !== '' && isValid;
         }
@@ -113,7 +115,6 @@ class ContactData extends Component {
         if (rules.match) {
             isValid = rules.match.test(value) && isValid;
         }
-
         return isValid;
     }
 
@@ -142,9 +143,11 @@ class ContactData extends Component {
         };
         
         updatedElement.attrs.value = event.target.value;
+
         if (updatedElement.validation && updatedElement.touched) {
             updatedElement.isValid = this.checkFieldValueValidity(updatedElement.attrs.value, updatedElement.validation)
         }
+
         updatedElement.touched = true;
         updatedOrderForm[inputIdentifier] = updatedElement;
 

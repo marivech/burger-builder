@@ -17,6 +17,7 @@ const form = ({ formType, attrs, label, changed, isValid, shouldValidate, touche
             elm = <Input attrs={attrs} changed={changed}/>;
             break;
     }
+    console.table(isValid, shouldValidate, touched)
     return (
         <div className={`${classes.FormElement} ${isValid || !shouldValidate || !touched ? '' : classes.Invalid }`}>
             <label>{label}</label>
