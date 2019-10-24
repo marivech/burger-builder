@@ -5,6 +5,8 @@ import FormElm from '../UI/Form/Form';
 import classes from './ContactData.module.css';
 import { connect } from 'react-redux';
 import * as orderActions from '../../store/actions';
+import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../configs/request';
 
 
 class ContactData extends Component {
@@ -214,4 +216,4 @@ const mapDispatchToProps = dispatch => {
         onOrderPlaced: orderData => dispatch(orderActions.purchaseBurger(orderData)),
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
+export default connect(mapStateToProps, mapDispatchToProps)(WithErrorHandler(ContactData, axios));

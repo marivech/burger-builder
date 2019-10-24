@@ -7,6 +7,8 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions';
+import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../configs/request';
 
 class BurgerBuilder extends Component {
     state = {
@@ -98,4 +100,4 @@ const mapDispatchToProps = (dispatch) => {
         onInitPurchase: () => dispatch(actions.purchaseInit()),
     };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(BurgerBuilder);
+export default connect(mapStateToProps, mapDispatchToProps)(WithErrorHandler(BurgerBuilder, axios));

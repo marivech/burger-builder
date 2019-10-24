@@ -78,7 +78,6 @@ export const fetchOrders = () => {
                         price: data[key].price.toFixed(2),
                     });
                 }
-                //console.log(fetchedOrders)
                 dispatch(fetchOrderSuccess(fetchedOrders));
             })
             .catch(error => {
