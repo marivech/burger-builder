@@ -10,3 +10,5 @@ export const PRICES = {
     meat: 1,
     bacon: 1.1,
 };
+
+export const FIREBASE_API_KEY = 'AIzaSyBLTZErCbl-sX-Wt715ElyeIWR0xWLPSUU';
