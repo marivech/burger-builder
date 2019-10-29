@@ -15,7 +15,7 @@ const sidedrawer = props => {
                 <ToggleButton viewState='opened' clicked={ props.hideSidedrawer }/>
                 <Logo size='large' />
                 <nav>
-                    <NavigationItems/>
+                    <NavigationItems isAuthed={props.isAuthed} />
                 </nav>
             </section>
         </Aux>

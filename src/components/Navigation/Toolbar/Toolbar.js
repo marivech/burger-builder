@@ -8,7 +8,7 @@ const toolbar = props => (
     <header className={ classes.Toolbar }>
         <ToggleButton viewState='closed' clicked={ props.showSidedrawer }/>
         <Logo size='small' />
-        <nav className={ classes.DesktopOnly }><NavigationItems /></nav>
+        <nav className={ classes.DesktopOnly }><NavigationItems isAuthed={props.isAuthed} /></nav>
     </header>
 );
 export default toolbar;

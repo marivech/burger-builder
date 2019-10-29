@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import Button from '../UI/Button/Button';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import FormElm from '../UI/Form/Form';
+import Button from '../../../components/UI/Button/Button';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+import FormElm from '../../../components/UI/Form/Form';
 import classes from './ContactData.module.css';
 import { connect } from 'react-redux';
-import * as orderActions from '../../store/actions';
-import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import axios from '../../configs/request';
+import * as orderActions from '../../../store/actions';
+import WithErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../../configs/request';
 
 
 class ContactData extends Component {
@@ -22,21 +22,6 @@ class ContactData extends Component {
                 },
                 validation: {
                     required: true,
-                },
-                isValid: false,
-                touched: false,
-            },
-            email: {
-                label: 'Email',
-                formType: 'input',
-                attrs: {
-                    type: 'text',
-                    placeholder: 'Your email',
-                    value: '',
-                },
-                validation: {
-                    required: true,
-                    match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
                 },
                 isValid: false,
                 touched: false,
@@ -133,7 +118,7 @@ class ContactData extends Component {
             orderData: {...formData},
         }
 
-        this.props.onOrderPlaced(order);
+        this.props.onOrderPlaced(order, this.props.token);
     }
 
     changeFieldHandler = (event, inputIdentifier) => {
@@ -208,12 +193,13 @@ const mapStateToProps = state => {
         ingredients: state.burgerBuilder.ingredients,
         totalPrice: state.burgerBuilder.totalPrice,
         error: state.order.error,
+        token: state.auth.token,
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderPlaced: orderData => dispatch(orderActions.purchaseBurger(orderData)),
+        onOrderPlaced: (orderData, token) => dispatch(orderActions.purchaseBurger(orderData, token)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(WithErrorHandler(ContactData, axios));
