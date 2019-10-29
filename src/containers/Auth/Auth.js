@@ -120,15 +120,15 @@ class Auth extends Component {
 
         const signMode = this.state.isSignUp ? 'SIGN UP' : 'SIGN IN';
         let message = this.props.error ? <p>{this.props.error.message}</p> : null;
-        if (this.props.token) {
-            message = (<Redirect to={this.props.authRedirectPath} />);
+        if (this.props.isAuthed) {
+            message = <Redirect to={this.props.authRedirectPath} />;
         }
         let form = (       
             <section className={ classes.Auth }>
                 <Button
                     type='Danger'
                     clicked={ this.switchAuthModeHandler }>{ this.state.isSignUp ? 'Go to SIGN IN' : 'Go to SIGN UP' }</Button>
-                    {message}
+                {message}
                 <h1>{ signMode }</h1>
                 <form onSubmit={ this.submitHandler }>
                     {formElements.map(({ attrs, formType, label, key, isValid, validation, touched }, i) =>
@@ -161,6 +161,7 @@ const mapStateToProps = state => {
         loading: state.auth.loading,
         error: state.auth.error,
         token: state.auth.token,
+        isAuthed: state.auth.token !== null,
         buildingBurger: state.burgerBuilder.building,
         authRedirectPath: state.auth.authRedirectPath,
     };

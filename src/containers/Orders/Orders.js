@@ -8,7 +8,7 @@ import axios from '../../configs/request';
 
 class Orders extends Component {
     componentDidMount() {
-        this.props.fetchOrders(this.props.authToken);
+        this.props.fetchOrders(this.props.authToken, this.props.userId);
     }
 
     render() {
@@ -26,11 +26,12 @@ const mapStateToProps = state => {
     return {
         orders: state.order.orders,
         authToken: state.auth.token,
+        userId: state.auth.userId,
     }
 };
 const mapDispatchToProps = dispatch => {
     return {
-        fetchOrders: (token) => dispatch(actions.fetchOrders(token)),
+        fetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId)),
     }
 };
 
