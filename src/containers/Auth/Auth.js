@@ -8,6 +8,7 @@ import * as actions from '../../store/actions/';
 import classes from './Auth.module.css';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { Redirect } from 'react-router-dom';
+import { checkFieldValueValidity, updateObject } from '../../shared/utility';
 
 class Auth extends Component {
     state = {
@@ -53,42 +54,23 @@ class Auth extends Component {
         }
     }
 
-    checkFieldValueValidity = (value, rules) => {
-        let isValid = true;
-        
-        if (!rules) {
-            return true;
-        }
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if (rules.minLength) {
-            isValid = value.trim().length >= rules.minLength && isValid;
-        }
-
-        if (rules.maxLength) {
-            isValid = value.trim().length <= rules.maxLength && isValid;
-        }
-
-        if (rules.match) {
-            isValid = rules.match.test(value) && isValid;
-        }
-        return isValid;
-    };
     changeFieldHandler = (event, inputIdentifier) => {
-        const updatedControls = {
-            ...this.state.controls,
-            [inputIdentifier]: {
-                ...this.state.controls[inputIdentifier],
-                isValid: this.checkFieldValueValidity(event.target.value, this.state.controls[inputIdentifier].validation),
-                touched: true,
-                attrs: {
-                    ...this.state.controls[inputIdentifier].attrs,
-                    value: event.target.value,
-                }
+        const updatedControls = updateObject(
+            this.state.controls,
+            {[inputIdentifier]: 
+                updateObject(
+                this.state.controls[inputIdentifier], 
+                {
+                    isValid: checkFieldValueValidity(event.target.value, this.state.controls[inputIdentifier].validation),
+                    touched: true,
+                    attrs: updateObject(
+                        this.state.controls[inputIdentifier].attrs,
+                        { value: event.target.value },
+                    ),
+                })
             }
-        };
+        );
+
         this.setState({ controls: updatedControls });
     };
 

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import * as orderActions from '../../../store/actions';
 import WithErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../../configs/request';
+import { checkFieldValueValidity, updateObject } from '../../../shared/utility';
 
 
 class ContactData extends Component {
@@ -73,7 +74,7 @@ class ContactData extends Component {
                 formType: 'textArea',
                 attrs: {},
                 validation: {},
-                isValid: false,
+                isValid: true,
                 touched: false,
             },
         },
@@ -81,29 +82,7 @@ class ContactData extends Component {
         formIsValid: false,
     };
 
-    checkFieldValueValidity = (value, rules) => {
-        let isValid = true;
-        
-        if (!rules) {
-            return true;
-        }
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
 
-        if (rules.minLength) {
-            isValid = value.trim().length >= rules.minLength && isValid;
-        }
-
-        if (rules.maxLength) {
-            isValid = value.trim().length <= rules.maxLength && isValid;
-        }
-
-        if (rules.match) {
-            isValid = rules.match.test(value) && isValid;
-        }
-        return isValid;
-    }
 
     placeOrderHandler = (event) => {
         event.preventDefault();
@@ -123,21 +102,21 @@ class ContactData extends Component {
     }
 
     changeFieldHandler = (event, inputIdentifier) => {
-        const updatedOrderForm = {
-            ...this.state.orderForm
-        };
-        const updatedElement = {
-            ...updatedOrderForm[inputIdentifier],
-        };
-        
-        updatedElement.attrs.value = event.target.value;
+        const updatedFormElement = updateObject(
+            this.state.orderForm[inputIdentifier],
+            {
+                isValid: checkFieldValueValidity(event.target.value, this.state.orderForm[inputIdentifier].validation),
+                touched: true,
+                attrs: updateObject(
+                    this.state.orderForm[inputIdentifier].attrs,
+                    { value: event.target.value, }
+                ),
+            }
+        );
 
-        if (updatedElement.validation && updatedElement.touched) {
-            updatedElement.isValid = this.checkFieldValueValidity(updatedElement.attrs.value, updatedElement.validation)
-        }
-
-        updatedElement.touched = true;
-        updatedOrderForm[inputIdentifier] = updatedElement;
+        const updatedOrderForm = updateObject(this.state.orderForm, {
+            [inputIdentifier]: updatedFormElement,
+        });
 
         let formIsValid = true;
         for (let key in updatedOrderForm) {
