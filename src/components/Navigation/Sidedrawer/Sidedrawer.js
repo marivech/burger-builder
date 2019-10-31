@@ -11,7 +11,7 @@ const sidedrawer = props => {
     return (
         <Aux>
             <Backdrop show={props.isOpen} clicked={props.hideSidedrawer} />
-            <section className={`${classes.Sidedrawer} ${visibleState}`}>
+            <section className={`${classes.Sidedrawer} ${visibleState}`} onClick={props.hideSidedrawer}>
                 <ToggleButton viewState='opened' clicked={ props.hideSidedrawer }/>
                 <Logo size='large' />
                 <nav>
