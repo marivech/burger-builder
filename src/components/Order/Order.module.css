@@ -12,6 +12,7 @@
     margin: 10px;
     display: inline-flex;
     list-style-type: none;
+    flex-wrap: wrap;
 }
 
 .IngredientsList li {
